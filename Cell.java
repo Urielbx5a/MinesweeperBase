@@ -1,7 +1,6 @@
 
 /**
  * Write a description of class Cell here.
- * 
  * @author Wiebe 
  * @version 10.11.16
  */
@@ -14,7 +13,7 @@ public class Cell implements ActionListener{
     //Variables you need to work with
     private int value;
     boolean isBomb;
-    private int index = 0;
+    
     //Variables you don't need to worry about or care about.
     private JButton button;
     /**
@@ -33,11 +32,11 @@ public class Cell implements ActionListener{
      * @return True if it is a bomb, otherwse false.
      */
     boolean isBomb(){
-        if (value == 0){
-            return false;
+        if (value == -1){
+            return true;
         }
         else{
-            return true;
+            return false;
         }
     }
 
@@ -48,13 +47,9 @@ public class Cell implements ActionListener{
     public int getValue(){
         return value;
     }
-    //public int getIndex(){
-        //System.out.println(board[index]);
-    //}
-    public void setValue(){
-        value = 0;
-        value++;
-        
+    public int setValue(){
+        value=value +1;
+        return value;
     }
     //The following methods are used for the User Inferface. These methods are fully functional and do not need to be modified.
     public void checkCell(){
@@ -66,7 +61,7 @@ public class Cell implements ActionListener{
         if(this.isBomb()){
             button.setText("\u2600");
             button.setBackground(Color.RED);
-        }else if(value!=0){
+        }else if(value !=0){
             button.setText(String.valueOf(value));
         }
     }

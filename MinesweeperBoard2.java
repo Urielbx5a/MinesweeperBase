@@ -10,7 +10,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class MinesweeperBoard2{
-    Cell[] board;
+    Cell[][] board;
     int rows;
     int columns;
     public MinesweeperBoard2(int row, int column){
@@ -18,7 +18,7 @@ public class MinesweeperBoard2{
 
         this.rows = row;
         this.columns = column;
-        board = new Cell[rows*columns];
+        board = new Cell[rows][columns];
         //These pieces are for the GUI.
         JFrame frame = new JFrame();
         frame.add(addCells());
@@ -31,16 +31,17 @@ public class MinesweeperBoard2{
     public MinesweeperBoard2(){
         this(10,10);
     }
-    //aevaldez123@gmail.com
+
     public void addBombs(int bombs) {//throws Exception{
 
         for(int i = 0; i < bombs; i ++){
             boolean placed = false;
 
             while (!placed){
-                int rand = (int)(Math.random() * (rows*columns) - 1);
-                if (board[rand].getValue() == 0){
-                    board[rand].setBomb();
+                int rand1 = (int)(Math.random() * (rows) - 1);
+                int rand2 = (int)(Math.random() * (columns) - 1);
+                if (board[rand1][rand2].getValue() == 0){
+                    board[rand1][rand2].setBomb();
                     placed = true;
                 }
             }
@@ -51,76 +52,225 @@ public class MinesweeperBoard2{
 
     public void addNums(){
         int total = (rows * columns);
+        int row = rows;
+        int column = columns;
+        for ( int i = 0; i < rows; i++){
+            for (int j = 0; j < columns; j++){
+                
+                if (board[i][j].getValue() != -1){
 
-        for ( int i = 0; i < total; i++){
-            
-            if (board[i].getValue() != -1){
-                //top
-                if ((board[i - rows]).getValue() == -1 && i-rows >= 0){
-                    board[i].setValue();
+                    if (board[0][0].getValue() == 0){ // first corner
+                        //right
+                        if (board[0][1].getValue() == -1){
+                            board[i][j].setValue();
+                        }
+                        //bot
+                        if (board[1][0].getValue() == -1 ){
+                            board[i][j].setValue();
+                        }
+                        //bot-right
+                        if (board[1][1].getValue() == -1 ){
+                            board[i][j].setValue();
+                        }
+                    } else if (board[0][column-1].getValue() == 0){ // second corner
+                        //left
+                        if (board[i ][j -1].getValue() == -1){
+                            board[i][j].setValue();
+                        }
+                        //bot
+                        if (board[i + rows][columns-1].getValue() == -1){
+                            board[i][j].setValue();
+                        }
+                        //bot-left
+                        if (board[i + rows -1][1].getValue() == -1 ){
+                            board[i][j].setValue();
+                        }
+                    } else if (board[rows-1][0].getValue() == 0){ // bottom left corner
+                        //right
+                        if (board[rows-1][j+1].getValue() == -1){
+                            board[i][j].setValue();
+                        }
+                        //top
+                        if (board[i-1][j].getValue() == -1){
+                            board[i][j].setValue();
+                        }
+                        //top-right
+                        if (board[i-1][j+1].getValue() == -1){
+                            board[i][j].setValue();
+                        }                
+                    }else if (board[rows-1][columns-1].getValue() == -1){ // bottom right corner
+                        //top
+                        if ((board[i-1][j]).getValue() == -1){
+                            board[i][j].setValue();
+                        }
+                        //top-left
+                        if (board[i-1][j-1].getValue() == -1){
+                            board[i][j].setValue();
+                        }
+                        //left
+                        if (board[i][j-1].getValue() == -1){
+                            board[i][j].setValue();
+                        }
+                    } else if (board[i][0].getValue() == 0){//left side
+                        //right
+                        if (board[i][j+1].getValue() == -1){
+                            board[i][j].setValue();
+                        }
+                        //top
+                        if ((board[i-1][j]).getValue() == -1 && i - rows >=0){
+                            board[i][j].setValue();
+                        }
+                        //top-right
+                        if (board[i-1][j+1].getValue() == -1 ){
+                            board[i][j].setValue();
+                        }
+                        //bot
+                        if (board[i+1][j].getValue() == -1 ){
+                            board[i][j].setValue();
+                        }
+                        //bot-right
+                        if (board[i+1][j+1].getValue() == -1){
+                            board[i][j].setValue();
+                        }
+                    }else if(board[i][columns-1].getValue()== 0){//right side
+                        //top
+                        if ((board[i - 1][j]).getValue() == -1 ){
+                            board[i][j].setValue();
+                        }
+                        //top-left
+                        if (board[i-1][j-1].getValue() == -1){
+                            board[i][j].setValue();
+                        }
+                        //left
+                        if (board[i][j-1].getValue() == -1){
+                            board[i][j].setValue();
+                        }
+                        //bot
+                        if (board[i + 1][j].getValue() == -1){
+                            board[i][j].setValue();
+                        }
+                        //bot-left
+                        if (board[i + 1][j -1].getValue() == -1){
+                            board[i][j].setValue();
+                        }
+
+                    } 
+                    else if(board[0][j].getValue()==0){//top row
+                        //left
+                        if (board[i][j-1].getValue() == -1){
+                            board[i][j].setValue();
+                        }
+                        //right
+                        if (board[i][j+1].getValue() == -1 ){
+                            board[i][j].setValue();
+                        }
+                        //bot
+                        if (board[i + 1][j].getValue() == -1 ){
+                            board[i][j].setValue();
+                        }
+                        //bot-left
+                        if (board[i + 1][j-1].getValue() == -1 ){
+                            board[i][j].setValue();
+                        }
+                        //bot-right
+                        if (board[i + 1][j + 1].getValue() == -1){
+                            board[i][j].setValue();
+                        }
+                    }else if(board[rows-1][j].getValue()==0){//bot row
+                        //top
+                        if ((board[i-1][j]).getValue() == -1){
+                            board[i][j].setValue();
+                        }
+                        //top-left
+                        if (board[i-1][j-1].getValue() == -1){
+                            board[i][j].setValue();
+                        }
+                        //top right
+                        if (board[i-1][j+1].getValue() == -1){
+                            board[i][j].setValue();
+                        }
+                        //left
+                        if (board[i][j-1].getValue() == -1){
+                            board[i][j].setValue();
+                        }
+                        //right
+                        if (board[i][j+1].getValue() == -1){
+                            board[i][j].setValue();
+                        }
+                    }
+                    else {
+                        //top
+                        if ((board[i-1][j]).getValue() == -1){
+                            board[i][j].setValue();
+                        }
+                        //top-left
+                        if (board[i-1][j-1].getValue() == -1){
+                            board[i][j].setValue();
+                        }
+                        //top-right
+                        if (board[i-1][j+1].getValue() == -1){
+                            board[i][j].setValue();
+                        }
+                        //left
+                        if (board[i][j-1].getValue() == -1){
+                            board[i][j].setValue();
+                        }
+                        //right
+                        if (board[i][j+1].getValue() == -1){
+                            board[i][j].setValue();
+                        }
+                        //bot
+                        if (board[i + 1][j].getValue() == -1 ){
+                            board[i][j].setValue();
+                        }
+                        //bot-left
+                        if (board[i+1][j-1].getValue() == -1){
+                            board[i][j].setValue();
+                        }
+                        //bot-right
+                        if (board[i+1][j+1].getValue() == -1){
+                            board[i][j].setValue();
+                        }
+                    }
                 }
-                //top-left
-                if (board[i - rows - 1].getValue() == -1 && i - rows - 1 >= 0 ){
-                    board[i].setValue();
-                }
-                //top-right
-                if (board[i - rows + 1].getValue() == -1 && i - rows + 1 >= 0){
-                    board[i].setValue();
-                }
-                //left
-                if (board[i - 1].getValue() == -1 ){
-                    board[i].setValue();
-                }
-                //right
-                if (board[i + 1].getValue() == -1 ){
-                    board[i].setValue();
-                }
-                //bot
-                if (board[i + rows].getValue() == -1 ){
-                    board[i].setValue();
-                }
-                //bot-left
-                if (board[i + rows -1].getValue() == -1 ){
-                    board[i].setValue();
-                }
-                //bot-right
-                if (board[i + rows + 1].getValue() == -1 ){
-                    board[i].setValue();
-                }
+                
             }
-            board[i].getValue();
+
         }
     }
 
     /**This method is used for testing and will be deleted if using the GUI.
      *  It is still required for all students.
      */
+
     public void printBoard(){
-        int index  = 0;
-        int j = 0;
+        //int index  = 0;
+        //int j = 0;
         for (int i = 0; i < rows; i++){
-            while(j < columns){
-                j++;
-                if (board[index].getValue() == -1){
+            //while(j < columns){
+            for(int j = 0; j < columns; j++){
+                //j++;
+                if (board[i][j].getValue() == -1){
                     System.out.print("X ");
                 }else{
-                    System.out.print(board[index].getValue() + " ");
+                    System.out.print(board[i][j].getValue() + " ");
                 }
-                index ++;
-                
+                //index ++;
             }
             System.out.println();
-            j = 0;
         }
     }
 
     public JPanel addCells(){
         JPanel panel = new JPanel(new GridLayout(rows,columns));
-        for(int i = 0; i< rows*columns; i++){
-            board[i]= new Cell();
-            panel.add(board[i].getButton());
+        for(int i = 0; i< rows; i++){
+            for(int j = 0; j < columns;j++){
+                board[i][j]= new Cell();
+                panel.add(board[i][j].getButton());
+            }
         }
         return panel;
     }
 
 }
+
